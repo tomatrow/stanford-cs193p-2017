@@ -78,3 +78,22 @@ extension ViewController {
 		return Concentration(numberOfPairsOfCards: cardButtons.count / 2)
 	}
 }
+
+
+/*
+
+Is a theme part of the model? or the view? 
+
+The view. 
+
+'A theme determines the set of emoji from which cards are chosen'
+
+This, is a contatainer for emoji: 
+
+
+*/
+/// A set of card faces. 
+struct Theme {
+//	init(emoji) {
+//	}
+}
