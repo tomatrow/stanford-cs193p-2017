@@ -48,7 +48,8 @@ class Concentration {
 			.map { [$0, $0] } // two copies of each card
 			.reduce([], +) // flatten
 		
-		// TODO: shuffle deck
+		// randomize order
+		deck.shuffle()
 	}
 }
 
