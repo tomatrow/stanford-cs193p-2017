@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-	lazy var game = Concentration(numberOfPairsOfCards: cardButtons.count / 2)
+	lazy var game = defaultConcentrationGame()
 	
 	var flipCount = 0 {
 		didSet { flipCountLabel.text = "Flips: \(flipCount)" }
@@ -22,7 +22,11 @@ class ViewController: UIViewController {
 	
 	@IBOutlet var flipCountLabel: UILabel!
 	
-	@IBAction func touchNewGame(_ sender: Any) {}
+	@IBAction func touchNewGame(_ sender: Any) {
+		game = defaultConcentrationGame()
+		flipCount = 0
+		updateViewFromModel()
+	}
 	
 	@IBAction func touchCard(_ sender: UIButton) {
 		flipCount += 1
@@ -66,5 +70,11 @@ class ViewController: UIViewController {
 		}
 		
 		return emoji[card.identifier] ?? "?"
+	}
+}
+
+extension ViewController {
+	func defaultConcentrationGame() -> Concentration {
+		return Concentration(numberOfPairsOfCards: cardButtons.count / 2)
 	}
 }
