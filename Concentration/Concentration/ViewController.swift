@@ -9,91 +9,89 @@
 import UIKit
 
 class ViewController: UIViewController {
-	lazy var game = defaultConcentrationGame()
-	
-	var flipCount = 0 {
-		didSet { flipCountLabel.text = "Flips: \(flipCount)" }
-	}
-	
-	@IBOutlet var cardButtons: [UIButton]! {
-		// UiOutletCollection has an unreliable order. So we tag and sort them.
-		didSet { cardButtons.sort { $0.tag < $1.tag } }
-	}
-	
-	@IBOutlet var flipCountLabel: UILabel!
-	
-	@IBAction func touchNewGame(_ sender: Any) {
-		game = defaultConcentrationGame()
-		flipCount = 0
-		updateViewFromModel()
-	}
-	
-	@IBAction func touchCard(_ sender: UIButton) {
-		flipCount += 1
-		if let cardNumber = cardButtons.index(of: sender) {
-			game.chooseCard(at: cardNumber)
-			updateViewFromModel()
-		} else {
-			print("Chosen card was not in Cardbuttons")
-		}
-	}
-	
-	func updateViewFromModel() {
-		cardButtons.indices.forEach { index in
-			let button = cardButtons[index]
-			let card = game.deck[index]
-			
-			if card.isFaceUp {
-				button.setTitle(emoji(for: card), for: .normal)
-				button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-			} else {
-				button.setTitle("", for: .normal)
-				button.backgroundColor = card.isMatched ? #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
-			}
-		}
-	}
-	
-	var emojiChoices = ["🎃", "👻", "🍪", "🍰",
-	                    "🍧", "🍡", "🍥", "🍙",
-	                    "🍘", "💰", "✂️", "🕹",
-	                    "⚓️", "🎹", "🍸", "🧀",
-	                    "🍮", "☕️", "🥜", "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-	                    "🍧", "⛩", "🕋", "🎀",
-	                    "☢️", "🈹", "🔱", "☑️"]
-	
-	var emoji = [Int: String]()
-	
-	func emoji(for card: Card) -> String {
-		if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-			let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // such typing
-			emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
-		}
-		
-		return emoji[card.identifier] ?? "?"
-	}
+    lazy var game = defaultConcentrationGame()
+
+    var flipCount = 0 {
+        didSet { flipCountLabel.text = "Flips: \(flipCount)" }
+    }
+
+    @IBOutlet var cardButtons: [UIButton]! {
+        // UiOutletCollection has an unreliable order. So we tag and sort them.
+        didSet { cardButtons.sort { $0.tag < $1.tag } }
+    }
+
+    @IBOutlet var flipCountLabel: UILabel!
+
+    @IBAction func touchNewGame(_: Any) {
+        game = defaultConcentrationGame()
+        flipCount = 0
+        updateViewFromModel()
+    }
+
+    @IBAction func touchCard(_ sender: UIButton) {
+        flipCount += 1
+        if let cardNumber = cardButtons.index(of: sender) {
+            game.chooseCard(at: cardNumber)
+            updateViewFromModel()
+        } else {
+            print("Chosen card was not in Cardbuttons")
+        }
+    }
+
+    func updateViewFromModel() {
+        cardButtons.indices.forEach { index in
+            let button = cardButtons[index]
+            let card = game.deck[index]
+
+            if card.isFaceUp {
+                button.setTitle(emoji(for: card), for: .normal)
+                button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            } else {
+                button.setTitle("", for: .normal)
+                button.backgroundColor = card.isMatched ? #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+            }
+        }
+    }
+
+    var emojiChoices = ["🎃", "👻", "🍪", "🍰",
+                        "🍧", "🍡", "🍥", "🍙",
+                        "🍘", "💰", "✂️", "🕹",
+                        "⚓️", "🎹", "🍸", "🧀",
+                        "🍮", "☕️", "🥜", "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+                        "🍧", "⛩", "🕋", "🎀",
+                        "☢️", "🈹", "🔱", "☑️"]
+
+    var emoji = [Int: String]()
+
+    func emoji(for card: Card) -> String {
+        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
+            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // such typing
+            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+        }
+
+        return emoji[card.identifier] ?? "?"
+    }
 }
 
 extension ViewController {
-	func defaultConcentrationGame() -> Concentration {
-		return Concentration(numberOfPairsOfCards: cardButtons.count / 2)
-	}
+    func defaultConcentrationGame() -> Concentration {
+        return Concentration(numberOfPairsOfCards: cardButtons.count / 2)
+    }
 }
-
 
 /*
 
-Is a theme part of the model? or the view? 
+ Is a theme part of the model? or the view?
 
-The view. 
+ The view.
 
-'A theme determines the set of emoji from which cards are chosen'
+ 'A theme determines the set of emoji from which cards are chosen'
 
-This, is a contatainer for emoji: 
+ This, is a contatainer for emoji:
 
-
-*/
-/// A set of card faces. 
+ */
+/// A set of card faces.
 struct Theme {
-//	init(emoji) {
-//	}
+    //	init(emoji) {
+    //	}
 }
