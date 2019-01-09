@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     }
 
     private func updateViewFromModel() {
-        flipCountLabel.text = "Score: \(game.score.description)"
+        flipCountLabel.text = "Score: \(game.score)"
         cardButtons.indices.forEach { index in
             let button = cardButtons[index]
             let card = game.deck[index]
