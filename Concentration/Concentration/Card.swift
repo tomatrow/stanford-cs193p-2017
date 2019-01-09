@@ -12,7 +12,7 @@ struct Card {
     var isFaceUp = false
     var isMatched = false
     var seen = false
-    var identifier: Int
+    private var identifier: Int
 
     private static var identifierFactory = 0
 
@@ -21,7 +21,19 @@ struct Card {
         return Card.identifierFactory
     }
 
-    init(identifier _: Int) {
+    init() {
         identifier = Card.getUniqueIdentifier()
+    }
+}
+
+extension Card: Equatable {
+    static func == (_ left: Card, _ right: Card) -> Bool {
+        return left.identifier == right.identifier
+    }
+}
+
+extension Card: Hashable {
+    var hashValue: Int {
+        return identifier
     }
 }

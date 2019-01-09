@@ -61,7 +61,7 @@ class Concentration {
         assert(left != right)
 
         // check for match
-        if deck[left].identifier == deck[right].identifier {
+        if deck[left] == deck[right] {
             // it was a match => mark them
             deck[left].isMatched = true
             deck[right].isMatched = true
@@ -78,8 +78,8 @@ class Concentration {
     init(numberOfPairsOfCards: Int) {
         // create deck
         deck = (0 ..< numberOfPairsOfCards)
-            .map { Card(identifier: $0) }
-            .map { [$0, $0] } // two copies of each card
+            .map { _ in Card() }
+            .map { [$0, $0] } // create pairs
             .reduce([], +) // flatten
 
         // randomize order

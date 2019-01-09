@@ -52,15 +52,15 @@ class ViewController: UIViewController {
 
     private var emojiChoices = Theme.randomTheme().emoji
 
-    private var emoji = [Int: String]()
+    private var emoji = [Card: String]()
 
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // such typing
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+        if emoji[card] == nil, emojiChoices.count > 0 {
+            let randomIndex = emojiChoices.count.arc4Random()
+            emoji[card] = emojiChoices.remove(at: randomIndex)
         }
 
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
 }
 
@@ -94,5 +94,12 @@ struct Theme {
 
     static func randomTheme() -> Theme {
         return standard.values.shuffled().first!
+    }
+}
+
+extension Int {
+    func arc4Random() -> Int {
+        // such typing
+        return Int(arc4random_uniform(UInt32(self)))
     }
 }
