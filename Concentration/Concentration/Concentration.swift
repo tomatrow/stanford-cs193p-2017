@@ -13,7 +13,26 @@ class Concentration {
     var flipCount = 0
     var deck: [Card]
 
-    var indexOfOnlyFaceUpCard: Int?
+    var indexOfOnlyFaceUpCard: Int? {
+        get {
+            var found: Int?
+            for index in deck.indices {
+                if deck[index].isFaceUp {
+                    if found == nil {
+                        found = index
+                    } else {
+                        return nil
+                    }
+                }
+            }
+            return found
+        }
+        set {
+            for index in deck.indices {
+                deck[index].isFaceUp = index == newValue
+            }
+        }
+    }
 
     func chooseCard(at index: Int) {
         // if the card is matched, then chooseing it is pointless
@@ -24,20 +43,12 @@ class Concentration {
 
         // three cases: (0) no cards up (1) one card up (2) two cards up
 
-        // one card up, and we are not choosing it
         if let matchIndex = indexOfOnlyFaceUpCard, matchIndex != index {
-            // one card up
-
+            // case (1)
             match(matchIndex, index)
-
             deck[index].isFaceUp = true // flip chosen card
-            indexOfOnlyFaceUpCard = nil // now more than two cards are up
         } else {
-            // no cards or two cards up
-
-            // flip all cards down except for our choice
-            deck.indices.forEach { deck[$0].isFaceUp = false }
-            deck[index].isFaceUp = true
+            // case (0) or (2)
             indexOfOnlyFaceUpCard = index
         }
     }
