@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBAction func touchNewGame(_: Any) {
         game = defaultConcentrationGame()
         flipCount = 0
+        emojiChoices = Theme.randomTheme().emoji
         updateViewFromModel()
     }
 
@@ -53,13 +54,7 @@ class ViewController: UIViewController {
         }
     }
 
-    var emojiChoices = ["🎃", "👻", "🍪", "🍰",
-                        "🍧", "🍡", "🍥", "🍙",
-                        "🍘", "💰", "✂️", "🕹",
-                        "⚓️", "🎹", "🍸", "🧀",
-                        "🍮", "☕️", "🥜", "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-                        "🍧", "⛩", "🕋", "🎀",
-                        "☢️", "🈹", "🔱", "☑️"]
+    var emojiChoices = Theme.randomTheme().emoji
 
     var emoji = [Int: String]()
 
@@ -79,19 +74,29 @@ extension ViewController {
     }
 }
 
-/*
-
- Is a theme part of the model? or the view?
-
- The view.
-
- 'A theme determines the set of emoji from which cards are chosen'
-
- This, is a contatainer for emoji:
-
- */
 /// A set of card faces.
 struct Theme {
-    //	init(emoji) {
-    //	}
+    let emoji: [String]
+
+    init(_ newEmoji: String) {
+        self.init(newEmoji.map { String($0) })
+    }
+
+    init(_ newEmoji: [String]) {
+        assert(newEmoji.count == 20)
+        emoji = newEmoji
+    }
+
+    static let standard = [
+        "flag": Theme("🏳️🏴🏁🚩🏳️‍🌈🇦🇫🇦🇽🇦🇱🇩🇿🇦🇸🇦🇩🇦🇴🇦🇮🇦🇶🇦🇬🇦🇷🇦🇲🇦🇼🇦🇺🇦🇹"),
+        "animal": Theme("🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒"),
+        "food": Theme("🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒"),
+        "sport": Theme("⚽️🏀🏈⚾️🎾🏐🏉🎱🏓🏸🥅🏒🏑🏏⛳️🏹🎣🥊🥋🎽"),
+        "car": Theme("🚗🚕🚙🚌🚎🏎🚓🚑🚒🚐🚚🚛🚜🛴🚲🛵🏍🚨🚔🚍"),
+        "love": Theme("❤️🧡💛💚💙💜🖤💔❣️💕💞💓💗💖💘💝💟☮️✝️☪️"),
+    ]
+
+    static func randomTheme() -> Theme {
+        return standard.values.shuffled().first!
+    }
 }
