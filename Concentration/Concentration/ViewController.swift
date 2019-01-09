@@ -9,23 +9,23 @@
 import UIKit
 
 class ViewController: UIViewController {
-    lazy var game = defaultConcentrationGame()
+    private lazy var game = defaultConcentrationGame()
 
-    @IBOutlet var cardButtons: [UIButton]! {
+    @IBOutlet private var cardButtons: [UIButton]! {
         // UiOutletCollection has an unreliable order. So we tag and sort them.
         didSet { cardButtons.sort { $0.tag < $1.tag } }
     }
 
-    @IBOutlet var flipCountLabel: UILabel!
+    @IBOutlet private var flipCountLabel: UILabel!
 
-    @IBAction func touchNewGame(_: Any) {
+    @IBAction private func touchNewGame(_: Any) {
         game = defaultConcentrationGame()
 
         emojiChoices = Theme.randomTheme().emoji
         updateViewFromModel()
     }
 
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         flipCountLabel.text = "Score: \(game.score.description)"
         cardButtons.indices.forEach { index in
             let button = cardButtons[index]
@@ -50,11 +50,11 @@ class ViewController: UIViewController {
         }
     }
 
-    var emojiChoices = Theme.randomTheme().emoji
+    private var emojiChoices = Theme.randomTheme().emoji
 
-    var emoji = [Int: String]()
+    private var emoji = [Int: String]()
 
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // such typing
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
-    func defaultConcentrationGame() -> Concentration {
+    private func defaultConcentrationGame() -> Concentration {
         return Concentration(numberOfPairsOfCards: cardButtons.count / 2)
     }
 }

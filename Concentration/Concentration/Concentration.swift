@@ -9,11 +9,11 @@
 import Foundation
 
 class Concentration {
-    var score = 0
-    var flipCount = 0
-    var deck: [Card]
+    private(set) var score = 0
+    private(set) var flipCount = 0
+    private(set) var deck: [Card]
 
-    var indexOfOnlyFaceUpCard: Int? {
+    private var indexOfOnlyFaceUpCard: Int? {
         get {
             var found: Int?
             for index in deck.indices {
