@@ -11,10 +11,6 @@ import UIKit
 class ViewController: UIViewController {
     lazy var game = defaultConcentrationGame()
 
-    var flipCount = 0 {
-        didSet { flipCountLabel.text = "Flips: \(flipCount)" }
-    }
-
     @IBOutlet var cardButtons: [UIButton]! {
         // UiOutletCollection has an unreliable order. So we tag and sort them.
         didSet { cardButtons.sort { $0.tag < $1.tag } }
@@ -24,13 +20,12 @@ class ViewController: UIViewController {
 
     @IBAction func touchNewGame(_: Any) {
         game = defaultConcentrationGame()
-        flipCount = 0
+
         emojiChoices = Theme.randomTheme().emoji
         updateViewFromModel()
     }
 
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -40,6 +35,7 @@ class ViewController: UIViewController {
     }
 
     func updateViewFromModel() {
+        flipCountLabel.text = "Score: \(game.score.description)"
         cardButtons.indices.forEach { index in
             let button = cardButtons[index]
             let card = game.deck[index]
